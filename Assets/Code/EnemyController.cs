@@ -37,18 +37,18 @@ public class EnemyController : MonoBehaviour
         directionChangeTimer = directionChangeInterval;
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Bullet"))
+        void OnTriggerEnter2D(Collider2D collision)
         {
-            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            if (bullet != null)
+            if (collision.gameObject.CompareTag("Bullet"))
             {
-                TakeDamage(40);
-            }
+                Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+                if (bullet != null)
+                {
+                    TakeDamage(40);
+                }
 
+            }
         }
-    }
 
     public void TakeDamage(float damage)
     {
