@@ -20,7 +20,7 @@ public class EnterBase : MonoBehaviour
     void Update()
     {
         float distanceToPlayer = Vector2.Distance(player.position, transform.position);
-        if(PowerSwitch.isPoweredOn){
+        if(PowerSwitch.power == true){
             if (distanceToPlayer < interactDistance)
             {
                 fIcon.SetActive(true);

@@ -9,10 +9,10 @@ public class ScientistController : MonoBehaviour
     
     public float waddleSpeed = 1.0f;  // Speed of waddling
     public float panicSpeed = 3.0f;  // Speed when in panic
-
+    public GameObject legs;
     public Animator topAnimator;  // Animator for the top part (for working and panic)
     public Animator bottomAnimator;  // Animator for the bottom part (for waddling and running)
-
+    public GameObject bloodDecalPrefab;
     private bool isPanic = false;  // Is the scientist in panic mode?
     private bool isDead = false;  // Is the scientist dead?
 
@@ -53,6 +53,7 @@ public class ScientistController : MonoBehaviour
         rb.velocity = randomDirection * waddleSpeed;
 
         // Update the bottom part to waddle animation
+        topAnimator.SetBool("true", true);
         bottomAnimator.SetBool("isWalking", true);
     }
 
@@ -64,14 +65,26 @@ public class ScientistController : MonoBehaviour
         rb.velocity = randomPanicDirection * panicSpeed;
 
         // Update the top and bottom part to panic/run animation
-        topAnimator.SetBool("isPanicking", true);
+        topAnimator.SetBool("isRunning", true);
         bottomAnimator.SetBool("isRunning", true);
     }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            if (bullet != null)
+            {
+                GetShot();
+            }
 
+        }
+    }
     // Function to handle getting shot
     public void GetShot()
     {
         currentHealth--;
+        topAnimator.SetTrigger("hit");
 
         if (currentHealth > 0)
         {
@@ -105,13 +118,13 @@ public class ScientistController : MonoBehaviour
     {
         isDead = true;
         rb.velocity = Vector2.zero;  // Stop movement
-
+        Destroy(legs);
         // Trigger death animation (if available)
         topAnimator.SetTrigger("isDead");
-        bottomAnimator.SetTrigger("isDead");
-
+        Instantiate(bloodDecalPrefab, transform.position, Quaternion.identity);
+        this.enabled = false;
         // Disable further interaction (optional)
         GetComponent<Collider2D>().enabled = false;
-        Destroy(gameObject, 2f);  // Optional: Destroy the object after 2 seconds
+    
     }
 }

@@ -21,7 +21,7 @@ public class EnemyController : MonoBehaviour
 
     public Animator legsAnimator;
     public Animator topAnimator;
-
+    public GameObject legs;
     public UnityEngine.Rendering.Universal.Light2D visionConeLight;  // Light2D for vision cone
 
     private Vector2 randomPatrolDirection;
@@ -44,9 +44,9 @@ public class EnemyController : MonoBehaviour
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             if (bullet != null)
             {
-                TakeDamage(bullet.damage);
+                TakeDamage(40);
             }
-            Destroy(collision.gameObject);  // Destroy the bullet on impact
+
         }
     }
 
@@ -59,6 +59,7 @@ public class EnemyController : MonoBehaviour
         {
             Die();
         }
+        Debug.Log("hit health = " + health);
     }
 
     void Update()
@@ -110,11 +111,6 @@ public class EnemyController : MonoBehaviour
         Vector2 direction = (player.position - topPart.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        topPart.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        if (visionConeLight != null)
-        {
-            visionConeLight.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        }
     }
 
     void RotateLegsTowardsMovement(Vector2 movementDirection)
@@ -161,6 +157,8 @@ public class EnemyController : MonoBehaviour
     {
         topAnimator.SetTrigger("dead");
         legsAnimator.SetBool("isMoving", false);
+        Destroy(legs);
+        Destroy(visionConeLight);
         Instantiate(bloodDecalPrefab, transform.position, Quaternion.identity);
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;

@@ -8,6 +8,7 @@ public class PowerSwitch : MonoBehaviour
     public Transform player;
     public float interactDistance = 3f;
     public bool isPoweredOn = true;
+    public bool power = false;
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class PowerSwitch : MonoBehaviour
     void TogglePower()
     {
         isPoweredOn = !isPoweredOn;
+        power = true;
         globalLight.enabled = isPoweredOn;  // Toggle the 2D light
     }
 }
