@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Bullet
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: floor
+    uniqueID: 355173723
+    locked: 0
+  - name: feet
+    uniqueID: 1052594809
+    locked: 0
+  - name: enemy feet
+    uniqueID: 567796783
+    locked: 0
+  - name: bullet
+    uniqueID: 916996615
+    locked: 0
+  - name: enemyTop
+    uniqueID: 4074482945
+    locked: 0
+  - name: torso
+    uniqueID: 2611084321
+    locked: 0
+  - name: wall
+    uniqueID: 266462801
+    locked: 0
+  - name: props
+    uniqueID: 1598326675
+    locked: 0
