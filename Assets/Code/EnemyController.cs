@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
 
     private float nextFireTime;
     private Transform topPart;
-    private bool isChasing = false;
+    public bool isChasing = false;
 
     public Animator legsAnimator;
     public Animator topAnimator;
