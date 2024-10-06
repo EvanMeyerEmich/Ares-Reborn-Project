@@ -14,13 +14,18 @@ public class PlayerController : MonoBehaviour
     public Transform firePoint; // Empty GameObject attached to the gun's position
     public float bulletSpeed = 10f;
     public int maxAmmo = 15;
-    public float reloadTime = 2f;
+    public float reloadTime = 0f;
     private int currentAmmo;
     private bool isReloading = false;
     Vector2 mousePos;
     private int rifleAmmo = 120;
     private bool rifle = false;
     private bool pistol = true;
+
+    public AudioSource audioSource;
+    public AudioClip reloadSound;
+    public AudioClip fireSound;
+
     
     // Weapon-related fields
     public Transform pistolFirePoint; // FirePoint for pistol
@@ -84,6 +89,8 @@ public class PlayerController : MonoBehaviour
     }
     else if (pistol)
     {
+        audioSource.clip = fireSound;
+        audioSource.Play();
         currentAmmo--;
         ammoCounter.text = currentAmmo + "/15";
         topAnimator.SetTrigger("shooting");
@@ -109,19 +116,19 @@ public class PlayerController : MonoBehaviour
         isReloading = true;
         topAnimator.SetTrigger("reload");
         Debug.Log("Reloading...");
-        
+        yield return new WaitUntil(() => !isReloading);
         if (rifle == true)
         {
-            yield return new WaitForSeconds(reloadTime);  // Wait for reload time
             rifleAmmo -= (30 - currentAmmo);
             currentAmmo = 30;
             isReloading = false;
             ammoCounter.text = currentAmmo + "/" + rifleAmmo;
+            
         }
         if (pistol == true)
         {
-            yield return new WaitForSeconds(reloadTime);  // Wait for reload time
-
+            audioSource.clip = reloadSound;
+            audioSource.Play();
             currentAmmo = maxAmmo;  // Refill ammo
             isReloading = false;
             ammoCounter.text = currentAmmo + "/15";
