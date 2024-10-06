@@ -40,24 +40,39 @@ public class PlayerController : MonoBehaviour
     {
         currentAmmo = maxAmmo;
         ammoCounter.text = currentAmmo + "/15";
-
-        // Set default weapon to pistol
-        SwitchWeapon(Weapon.Pistol);
+        firePoint = pistolFirePoint;
     }
 
     void Update()
     {
-        if (isReloading)
-            return;  // Prevent actions while reloading
+        if (Input.GetKeyDown(KeyCode.R)){
+            Reload();
+        }
+            
 
         // Weapon switching logic
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SwitchWeapon(Weapon.Pistol);
+            
+            pistol = true;
+            rifle = false;
+            topAnimator.SetBool("pistol", true);
+            
+            firePoint = pistolFirePoint; // Set firePoint to pistolFirePoint
+            Debug.Log("Switched to Pistol");
+
         }
+       
+
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SwitchWeapon(Weapon.Rifle);
+            pistol = false;
+            rifle = true;
+            firePoint = rifleFirePoint; // Set firePoint to rifleFirePoint
+            topAnimator.SetBool("rifle", true);
+            currentAmmo = 30;
+            ammoCounter.text = currentAmmo + "/" + rifleAmmo;
+            Debug.Log("Switched to Rifle");
         }
 
         // Get the mouse position
@@ -70,7 +85,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            StartCoroutine(Reload());
+            Reload();
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse0) && currentAmmo > 0)
@@ -106,59 +121,31 @@ public class PlayerController : MonoBehaviour
 
     if (currentAmmo <= 0)
     {
-        StartCoroutine(Reload());
+        Reload();
     }
 }
 
 
-    IEnumerator Reload()
+    void Reload()
     {
-        isReloading = true;
         topAnimator.SetTrigger("reload");
         Debug.Log("Reloading...");
-        yield return new WaitUntil(() => !isReloading);
+        
         if (rifle == true)
         {
             rifleAmmo -= (30 - currentAmmo);
             currentAmmo = 30;
-            isReloading = false;
             ammoCounter.text = currentAmmo + "/" + rifleAmmo;
-            
         }
         if (pistol == true)
         {
             audioSource.clip = reloadSound;
             audioSource.Play();
             currentAmmo = maxAmmo;  // Refill ammo
-            isReloading = false;
             ammoCounter.text = currentAmmo + "/15";
         }
     }
 
-    void SwitchWeapon(Weapon newWeapon)
-    {
-        currentWeapon = newWeapon;
-
-        switch (currentWeapon)
-        {
-            case Weapon.Pistol:
-                pistol = true;
-                rifle = false;
-                firePoint = pistolFirePoint; // Set firePoint to pistolFirePoint
-                Debug.Log("Switched to Pistol");
-                break;
-
-            case Weapon.Rifle:
-                pistol = false;
-                rifle = true;
-                firePoint = rifleFirePoint; // Set firePoint to rifleFirePoint
-                topAnimator.SetBool("rifle", true);
-                currentAmmo = 30;
-                ammoCounter.text = currentAmmo + "/" + rifleAmmo;
-                Debug.Log("Switched to Rifle");
-                break;
-        }
-    }
 
     void FixedUpdate()
     {

@@ -30,6 +30,10 @@ public class EnemyController : MonoBehaviour
 
     public GameObject bloodDecalPrefab;
 
+    public AudioSource audioSource;
+
+    public AudioClip shotSound;
+
     void Start()
     {
         topPart = transform.Find("TopPart");
@@ -127,7 +131,10 @@ public class EnemyController : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
         bulletRb.velocity = (player.position - firePoint.position).normalized * 10f;
+        audioSource.clip = shotSound;
+        audioSource.Play();
     }
+
 
     void ChasePlayer()
     {
