@@ -19,9 +19,6 @@ public class CameraFollow : MonoBehaviour
         // Camera follows the player
         FollowPlayer();
 
-        // Camera rotates when Q or E are pressed
-        RotateCamera();
-
         // Camera zooms in/out with mouse wheel
         ZoomCamera();
     }
@@ -36,19 +33,7 @@ public class CameraFollow : MonoBehaviour
         transform.position = smoothedPosition;
     }
 
-    void RotateCamera()
-    {
-        // Rotate camera around player when Q or E are pressed
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.RotateAround(player.position, Vector3.up, rotationSpeed * Time.deltaTime);
-        }
-
-        if (Input.GetKey(KeyCode.E))
-        {
-            transform.RotateAround(player.position, Vector3.down, rotationSpeed * Time.deltaTime);
-        }
-    }
+    
 
     void ZoomCamera()
     {

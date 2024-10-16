@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void Shoot()
-    {
+{
     if (rifle)
     {
         currentAmmo--;
@@ -110,20 +110,30 @@ public class PlayerController : MonoBehaviour
         ammoCounter.text = currentAmmo + "/15";
         topAnimator.SetTrigger("shooting");
     }
-    
 
     // Instantiate and shoot the bullet from the current firePoint
-    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-    Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-    
-    // Set the bullet's velocity based on the firePoint's forward direction
-    bulletRb.velocity = firePoint.right * bulletSpeed; // Use firePoint's right direction for bullet travel
+    if (bulletPrefab != null)
+    {
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation); // Create a clone
+        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+
+        // Set the bullet's velocity based on the firePoint's forward direction
+        bulletRb.velocity = firePoint.right * bulletSpeed; // Use firePoint's right direction for bullet travel
+
+        // Destroy the bullet after a certain time to avoid cluttering the scene with too many bullets
+        Destroy(bullet, 5f);  // Destroys the cloned instance after 5 seconds
+    }
+    else
+    {
+        Debug.LogError("Bullet prefab is not assigned!");
+    }
 
     if (currentAmmo <= 0)
     {
         Reload();
     }
 }
+
 
 
     void Reload()
